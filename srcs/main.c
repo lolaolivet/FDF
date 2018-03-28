@@ -6,16 +6,22 @@
 /*   By: lolivet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/09 14:18:31 by lolivet           #+#    #+#             */
-/*   Updated: 2018/03/28 18:48:33 by lolivet          ###   ########.fr       */
+/*   Updated: 2018/03/29 00:35:58 by lolivet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	ft_error(char *str)
+int		verify_arg(char *width, char *height)
 {
-	ft_puterror(str);
-	exit(0);
+	int		w;
+	int		h;
+
+	if ((w = ft_atoi(width)) && (h = ft_atoi(height))
+			&& ((w <= 1500 && h <= 1300) && (w >= 100 && h >= 100)))
+		return (1);
+	else
+		return (0);
 }
 
 int		open_file(char *file, int argc)
@@ -28,13 +34,13 @@ int		open_file(char *file, int argc)
 	ext = ".fdf";
 	if (ft_strstr(file, ext))
 	{
-		if ((fd = open(file, O_RDONLY)) == -1 && argc != 2)
+		if (!(fd = open(file, O_RDONLY)) || fd == -1 || argc < 2)
 			ft_error(strerror(errno));
 		else
 			return (fd);
 	}
 	else
-		ft_error("Not a valid file");
+		ft_error(strerror(errno));
 	return (0);
 }
 
@@ -58,6 +64,9 @@ void	init_map(t_fdf *d)
 	d->ud = 0;
 	d->rl = 0;
 	d->a = 0;
+	d->color = 0xffffff;
+	d->img_h = IMG_H;
+	d->img_w = IMG_W;
 }
 
 void	init_arg(t_fdf *d, int argc, char **argv)
@@ -66,23 +75,25 @@ void	init_arg(t_fdf *d, int argc, char **argv)
 
 	if (argc == 3)
 	{
-		ft_htoi(argv[2], &res, 0, 0);
-		d->color = res;
-		d->img_h = IMG_H;
-		d->img_w = IMG_W;
+		if (ft_htoi(argv[2], &res, 0, 0))
+		{
+			d->color = res;
+			d->img_h = IMG_H;
+			d->img_w = IMG_W;
+		}
+		else
+			ft_error("Not an hexadecimal number");
 	}
 	else if (argc == 5)
 	{
-		ft_htoi(argv[2], &res, 0, 0);
-		d->color = res;
-		d->img_w = ft_atoi(argv[3]);
-		d->img_h = ft_atoi(argv[4]);
-	}
-	else
-	{
-		d->color = 0xffffff;
-		d->img_h = IMG_H;
-		d->img_w = IMG_W;
+		if (ft_htoi(argv[2], &res, 0, 0) && verify_arg(argv[3], argv[4]))
+		{
+			d->color = res;
+			d->img_w = ft_atoi(argv[3]);
+			d->img_h = ft_atoi(argv[4]);
+		}
+		else
+			ft_error("Not a number, number too big or negative");
 	}
 }
 
@@ -90,6 +101,7 @@ int		main(int argc, char **argv)
 {
 	t_fdf	data;
 
+	ft_bzero(&data, sizeof(t_fdf));
 	if (argc < 2 || argc > 5 || argc == 4)
 		ft_error("Wrong number of argument");
 	if (!(data.coord = (int **)ft_memalloc(sizeof(int *) * 2))
@@ -104,4 +116,5 @@ int		main(int argc, char **argv)
 	draw_grid(&data);
 	mlx_key_hook(data.win_ptr, deal_key, (void *)&data);
 	mlx_loop(data.mlx_ptr);
+	return (0);
 }

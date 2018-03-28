@@ -6,7 +6,7 @@
 #    By: lolivet <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/03/09 15:20:22 by lolivet           #+#    #+#              #
-#    Updated: 2018/03/28 18:39:48 by lolivet          ###   ########.fr        #
+#    Updated: 2018/03/29 00:03:07 by lolivet          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ CC_FLAGS	= -Werror -Wextra -Wall -g3
 LIB_FLAGS	= -lm -L $(LIB_PATH) -lft
 MLX_FLAGS	= -L $(MLX_PATH) -lmlx -framework OpenGL -framework AppKit
 
-SRC_NAME	= main.c draw_grid.c draw_line.c images.c parse_file.c  positions.c
+SRC_NAME	= main.c draw_grid.c draw_line.c images.c parse_file.c  positions.c error.c
 INC_NAME	= fdf.h 
 
 SRCS		= $(addprefix $(SRC_PATH), $(SRC_NAME))
@@ -39,7 +39,7 @@ all: $(NAME)
 $(NAME): $(OBJS)
 	@make -C $(LIB_PATH)
 	@make -C $(MLX_PATH)
-	$(CC) -o $(NAME) $(OBJS) $(LIB_FLAGS) $(MLX_FLAGS)
+	$(CC) -o $(NAME) $(CC_FLAGS) $(OBJS) $(LIB_FLAGS) $(MLX_FLAGS)
 
 $(OBJ_PATH)%.o: $(SRC_PATH)%.c
 	@mkdir -p $(OBJ_PATH)
