@@ -6,7 +6,7 @@
 /*   By: lolivet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/09 14:18:31 by lolivet           #+#    #+#             */
-/*   Updated: 2018/03/29 00:35:58 by lolivet          ###   ########.fr       */
+/*   Updated: 2018/03/31 03:24:49 by lolivet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,14 @@ int		verify_arg(char *width, char *height)
 	int		w;
 	int		h;
 
-	if ((w = ft_atoi(width)) && (h = ft_atoi(height))
-			&& ((w <= 1500 && h <= 1300) && (w >= 100 && h >= 100)))
-		return (1);
+	if ((w = ft_atoi(width)))
+	{
+		if ((h = ft_atoi(height)) && ((w <= 2500 && h <= 1300)
+					&& (w >= 100 && h >= 100)))
+			return (1);
+		else
+			return (0);
+	}
 	else
 		return (0);
 }
@@ -44,8 +49,14 @@ int		open_file(char *file, int argc)
 	return (0);
 }
 
-void	init_map(t_fdf *d)
+void	init_map(t_fdf *d, int argc)
 {
+	if (argc == 2)
+	{
+		d->color = 0xffffff;
+		d->img_h = IMG_H;
+		d->img_w = IMG_W;
+	}
 	d->mlx_ptr = mlx_init();
 	d->win_ptr = mlx_new_window(d->mlx_ptr, d->img_w, d->img_h, "FDF");
 	new_image(d, d->img_w, d->img_h);
@@ -64,9 +75,6 @@ void	init_map(t_fdf *d)
 	d->ud = 0;
 	d->rl = 0;
 	d->a = 0;
-	d->color = 0xffffff;
-	d->img_h = IMG_H;
-	d->img_w = IMG_W;
 }
 
 void	init_arg(t_fdf *d, int argc, char **argv)
@@ -84,7 +92,7 @@ void	init_arg(t_fdf *d, int argc, char **argv)
 		else
 			ft_error("Not an hexadecimal number");
 	}
-	else if (argc == 5)
+	if (argc == 5)
 	{
 		if (ft_htoi(argv[2], &res, 0, 0) && verify_arg(argv[3], argv[4]))
 		{
@@ -108,11 +116,9 @@ int		main(int argc, char **argv)
 			|| !(data.coord[0] = (int *)ft_memalloc(sizeof(int) * 2))
 			|| !(data.coord[1] = (int *)ft_memalloc(sizeof(int) * 2)))
 		ft_error(strerror(errno));
-	data.fd = open_file(argv[1], argc);
-	data.fd2 = open_file(argv[1], argc);
-	parse_file(&data, 0, 0, 0);
+	parse_file(&data, argv[1]);
 	init_arg(&data, argc, argv);
-	init_map(&data);
+	init_map(&data, argc);
 	draw_grid(&data);
 	mlx_key_hook(data.win_ptr, deal_key, (void *)&data);
 	mlx_loop(data.mlx_ptr);

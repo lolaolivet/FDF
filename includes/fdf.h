@@ -6,7 +6,7 @@
 /*   By: lolivet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/13 11:21:31 by lolivet           #+#    #+#             */
-/*   Updated: 2018/03/29 00:03:41 by lolivet          ###   ########.fr       */
+/*   Updated: 2018/03/31 00:21:32 by lolivet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,6 @@ typedef struct	s_fdf
 	void		*win_ptr;
 	void		*img_ptr;
 	char		*img_string;
-	int			fd;
-	int			fd2;
 	int			x;
 	int			y;
 	int			ud;
@@ -65,9 +63,10 @@ typedef struct	s_fdf
 	int			x_i;
 	int			y_i;
 	int			color;
+	char		**tmp;
 }				t_fdf;
 
-void			parse_file(t_fdf *d, int i, int j, int k);
+void			parse_file(t_fdf *d, char *filename);
 void			draw_grid(t_fdf *d);
 void			draw_line(t_fdf *d);
 void			fill_pixel(t_fdf *d, int x, int y, int color);
