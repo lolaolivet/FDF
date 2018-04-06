@@ -6,7 +6,7 @@
 /*   By: lolivet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/09 14:18:31 by lolivet           #+#    #+#             */
-/*   Updated: 2018/03/31 03:24:49 by lolivet          ###   ########.fr       */
+/*   Updated: 2018/04/06 17:35:39 by lolivet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,8 @@ int		main(int argc, char **argv)
 	init_arg(&data, argc, argv);
 	init_map(&data, argc);
 	draw_grid(&data);
-	mlx_key_hook(data.win_ptr, deal_key, (void *)&data);
+	//mlx_key_hook(data.win_ptr, deal_key, (void *)&data);
+	mlx_hook(data.win_ptr, 2, (1L << 0), &deal_key, (void *)&data);
 	mlx_loop(data.mlx_ptr);
 	return (0);
 }

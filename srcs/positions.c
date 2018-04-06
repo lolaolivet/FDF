@@ -34,13 +34,13 @@ void	scale(t_fdf *d, int key)
 	neg = (key == 24) ? 0 : 1;
 	if (neg && (d->t_h / 2 > 0 && d->t_w / 2 > 0))
 	{
-		d->t_h -= 2;
-		d->t_w -= 2;
+		d->t_h -= 1;
+		d->t_w -= 1;
 	}
 	else if (!(neg) && (d->t_h * 2 < 512 && d->t_w * 2 < 512))
 	{
-		d->t_h += 2;
-		d->t_w += 2;
+		d->t_h += 1;
+		d->t_w += 1;
 	}
 	draw_grid(d);
 }

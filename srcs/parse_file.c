@@ -6,43 +6,37 @@
 /*   By: lolivet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/12 14:25:20 by lolivet           #+#    #+#             */
-/*   Updated: 2018/03/31 02:19:41 by lolivet          ###   ########.fr       */
+/*   Updated: 2018/04/06 17:35:45 by lolivet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	check_size(t_fdf *d, char **p)
+void	check_size(t_fdf *d, int j)
 {
-	int		i;
+	/*
 	int		j;
 
-	i = 0;
 	j = 0;
-	while (i < d->nb_line)
+	while (j < d->nb_col && tmp[j])
 	{
-		while (j < d->nb_col && p[i][j])
-		{
-			j++;
-		}
-		ft_strdel(&(p[i]));
-		if (j != d->nb_col)
-			ft_error("Not a valid map");
-		i++;
+		printf("tmp: %s\nj: %d\n", tmp[j], j);
+		j++;
 	}
-	free(p);
+	if (j != d->nb_col)
+		ft_error("Check -- Not a valid map");
+		*/
+	if (j != d->nb_col)
+		ft_error("Not a valid map");
 }
 
-void	fill_points(t_fdf *d, char **p, int j, int k)
+void	fill_points(t_fdf *d, int i, int j, int k)
 {
-	int		i;
-
-	i = 0;
 	if (!(d->p = (t_tab*)ft_memalloc(sizeof(t_tab) * d->size_p)))
 		ft_error(strerror(errno));
 	while (i < d->nb_line)
 	{
-		while (j < d->nb_col && p[i][j])
+		while (j < d->nb_col)
 		{
 			if (d->pos[i][j] != 0)
 			{
@@ -52,13 +46,11 @@ void	fill_points(t_fdf *d, char **p, int j, int k)
 			}
 			j++;
 		}
-		if (j != d->nb_col)
-			ft_error("Not a valid map");
+		//if (j != d->nb_col)
+		//ft_error("Fill -- Not a valid map");
 		j = 0;
-		ft_strdel(&(p[i]));
 		i++;
 	}
-	free(p);
 }
 
 void	fill_position(t_fdf *d, char **p, int i, int j)
@@ -80,14 +72,14 @@ void	fill_position(t_fdf *d, char **p, int i, int j)
 				(d->size_p)++;
 			j++;
 		}
+		ft_strdel(&(p[i]));
 		free(tmp);
 		j = 0;
 		i++;
 	}
 	if (d->size_p)
-		fill_points(d, p, 0, 0);
-	else
-		check_size(d, p);
+		fill_points(d, 0, 0, 0);
+	free(p);
 }
 
 void	get_nb_line(t_fdf *d, char *filename)
@@ -119,7 +111,7 @@ void	parse_file(t_fdf *d, char *filename)
 	char	**tmp;
 
 	get_nb_line(d, filename);
-	if (!(line = (char **)ft_memalloc(sizeof(char *) * d->nb_line)))
+	if (!(line = (char **)ft_memalloc(sizeof(char *) * d->nb_line + 1)))
 		ft_error(strerror(errno));
 	if ((fd = open(filename, O_RDONLY)) < 0)
 		ft_error(strerror(errno));
@@ -129,10 +121,12 @@ void	parse_file(t_fdf *d, char *filename)
 		tmp = ft_strsplit(line[k++], ' ');
 		i = 0;
 		while (tmp[i])
+		{
 			ft_strdel(&(tmp[i++]));
-		free(tmp);
+		}
 		d->nb_col = i > d->nb_col ? i : d->nb_col;
 	}
+	free(tmp);
 	if (i < 0)
 		ft_error(strerror(errno));
 	close(fd);
