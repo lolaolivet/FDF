@@ -6,7 +6,7 @@
 /*   By: lolivet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/13 11:21:31 by lolivet           #+#    #+#             */
-/*   Updated: 2018/03/31 00:21:32 by lolivet          ###   ########.fr       */
+/*   Updated: 2018/04/09 15:30:01 by lolivet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,5 +78,6 @@ void			change_pos(t_fdf *d, int key, int i);
 void			move_map(t_fdf *d, int key);
 void			scale(t_fdf *d, int key);
 void			ft_error(char *str);
+void			check_entry(char *tmp);
 
 #endif

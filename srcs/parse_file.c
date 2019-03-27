@@ -6,7 +6,7 @@
 /*   By: lolivet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/12 14:25:20 by lolivet           #+#    #+#             */
-/*   Updated: 2018/04/07 19:08:17 by lolivet          ###   ########.fr       */
+/*   Updated: 2018/04/09 15:33:02 by lolivet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ void	fill_position(t_fdf *d, char **p, int i, int j)
 		ft_strdel(&(p[i]));
 		while (++j < d->nb_col && tmp[j])
 		{
+			check_entry(tmp[j]);
 			d->pos[i][j] = ft_atoi(tmp[j]);
 			ft_strdel(&(tmp[j]));
 			if (d->pos[i][j] != 0)

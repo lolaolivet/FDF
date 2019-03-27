@@ -6,7 +6,7 @@
 /*   By: lolivet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/09 14:18:31 by lolivet           #+#    #+#             */
-/*   Updated: 2018/04/07 19:19:33 by lolivet          ###   ########.fr       */
+/*   Updated: 2018/04/09 15:51:26 by lolivet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int		verify_arg(char *width, char *height)
 	if ((w = ft_atoi(width)))
 	{
 		if ((h = ft_atoi(height)) && ((w <= 2500 && h <= 1300)
-					&& (w >= 100 && h >= 100)))
+					&& (w >= 200 && h >= 200)))
 			return (1);
 		else
 			return (0);
@@ -66,13 +66,13 @@ void	init_map(t_fdf *d, int argc)
 	new_image(d, d->img_w, d->img_h);
 	if (d->img_h / d->nb_line < d->img_w / d->nb_line)
 	{
-		d->t_h = (d->img_h / d->nb_line) / 2;
-		d->t_w = (d->img_h / d->nb_line) / 2;
+		d->t_h = (d->img_h / d->nb_line);
+		d->t_w = (d->img_h / d->nb_line);
 	}
 	else
 	{
-		d->t_h = (d->img_w / d->nb_col) / 2;
-		d->t_w = (d->img_w / d->nb_col) / 2;
+		d->t_h = (d->img_w / d->nb_col);
+		d->t_w = (d->img_w / d->nb_col);
 	}
 	d->x_i = (d->img_w - (d->t_w * d->nb_col)) / 2;
 	d->y_i = (d->img_h - (d->t_h * d->nb_line)) / 2;
@@ -105,7 +105,7 @@ void	init_arg(t_fdf *d, int argc, char **argv)
 			d->img_h = ft_atoi(argv[4]);
 		}
 		else
-			ft_error("Not a number, number too big or negative");
+			ft_error("Not a number, number too big or too low");
 	}
 }
 
